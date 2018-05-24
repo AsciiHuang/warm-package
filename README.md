@@ -7,6 +7,6 @@
 * Android Application 操作
 * Android Service 操作
 * Android Activity
-* MVP 架構
+* MVP 架構
 * Generic 泛型操作
 * Kotlin 操作 Java 的方式 (GSON、Volley 等)
