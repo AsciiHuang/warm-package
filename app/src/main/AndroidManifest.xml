@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         android:name=".WarmApp">
 
-        <service android:name=".WarmService"
+        <service android:name=".model.WarmService"
             android:enabled="true"
             android:exported="false" />
 

@@ -1,9 +1,12 @@
-package com.ascii.warmpackage
+package com.ascii.warmpackage.presenter
+
+import com.ascii.warmpackage.WarmPackageView
+import com.ascii.warmpackage.model.WarmPackageModel
 
 class MainPresenter(view: WarmPackageView): WarmPackagePresenter {
 
-    private var view:WarmPackageView ?= null
-    private var model:WarmPackageModel ?= null
+    private var view: WarmPackageView?= null
+    private var model: WarmPackageModel?= null
 
     init {
         this.view = view

@@ -1,4 +1,6 @@
-package com.ascii.warmpackage
+package com.ascii.warmpackage.presenter
+
+import com.ascii.warmpackage.model.WarmPackageModel
 
 interface WarmPackagePresenter {
     fun initial()

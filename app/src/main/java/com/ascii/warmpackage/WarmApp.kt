@@ -7,6 +7,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
+import com.ascii.warmpackage.model.WarmService
 
 class WarmApp : Application() {
 

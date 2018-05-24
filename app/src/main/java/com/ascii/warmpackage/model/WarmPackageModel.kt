@@ -1,4 +1,4 @@
-package com.ascii.warmpackage
+package com.ascii.warmpackage.model
 
 interface WarmPackageModel {
     fun startWarm()

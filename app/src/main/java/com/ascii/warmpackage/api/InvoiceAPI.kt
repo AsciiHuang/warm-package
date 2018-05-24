@@ -17,7 +17,7 @@ class InvoiceAPI(queue: RequestQueue) : APIBase<InvoiceAPI, InvoiceResult>(queue
     }
 
     // 省略 { return "..." } function body 的寫法
-    override fun getUrl(): String = ""
+    override fun getUrl(): String = "https://asciihuang.github.io/invoice.json"
 
     override fun parseResult(data: String): InvoiceResult {
         var receiptResult = Gson().fromJson(data, InvoiceResult::class.java)

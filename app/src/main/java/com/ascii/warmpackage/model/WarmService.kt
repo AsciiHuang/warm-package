@@ -1,4 +1,4 @@
-package com.ascii.warmpackage
+package com.ascii.warmpackage.model
 
 import android.app.NotificationManager
 import android.app.Service
@@ -18,6 +18,10 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import com.android.volley.toolbox.Volley
 import com.android.volley.RequestQueue
+import com.ascii.warmpackage.Base64
+import com.ascii.warmpackage.MainActivity
+import com.ascii.warmpackage.R
+import com.ascii.warmpackage.WarmApp
 import com.ascii.warmpackage.api.API
 import com.ascii.warmpackage.api.InvoiceAPI
 import com.ascii.warmpackage.api.InvoiceResult
