@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity(), WarmPackageView {
     private var warmService: WarmService? = null
     private var presenter: WarmPackagePresenter? =null
     private var parentView: View? = null
-    private var initTargetTemp:Int = 0
-    private var snackbar:Snackbar? = null
+    private var initTargetTemp: Int = 0
+    private var snackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(), WarmPackageView {
 
     override fun onDestroy() {
         super.onDestroy()
+        // 想想這裡如果寫 != true 會有什麼危險
         if (presenter?.getIsRunning() == false) {
             presenter?.closeService()
         }
@@ -80,6 +81,8 @@ class MainActivity : AppCompatActivity(), WarmPackageView {
                 presenter?.attachModel(it)
                 presenter?.initial()
             }
+
+            // 針對 == null 時要做事的情況似乎沒有方便的寫法
             if (warmService == null) {
                 updateUIStatus()
             }
@@ -90,7 +93,7 @@ class MainActivity : AppCompatActivity(), WarmPackageView {
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             if (fromUser) {
                 var temperature = initTargetTemp + progress
-                textviewTemperature.setText("" + temperature)
+                textviewTemperature.setText("$temperature")
                 presenter?.setTargetTemperature(temperature.toDouble())
             }
         }
@@ -145,7 +148,7 @@ class MainActivity : AppCompatActivity(), WarmPackageView {
     }
 
     // Unit 就是 void 的意思，可省略不寫
-    // Nothing
+    // 也可以寫 Nothing 但意義不同
     private fun createSnackBar(): Unit {
         // object: View.OnClickListener 是 new View.OnClickListener 最直接的翻譯
         snackbar = Snackbar.make(parentView!!, R.string.running, Snackbar.LENGTH_INDEFINITE)

@@ -59,7 +59,7 @@ Kotlin 沒有 Java 的 int、boolean、double、void 這種非類別的成員與
 ## 最基礎必須要懂的 Kotlin 語法
 
 ### static 成員使用 companion object 取代
- - WarmApp.kt - Line 14
+ - WarmApp.kt Line 14
 
 ```
 // Java 寫法
@@ -72,7 +72,7 @@ companion object {
 ```
 
 ### Variable
- -  WarmApp.kt - Line 25
+ -  WarmApp.kt Line 25
 
 ```
 // Java 寫法
@@ -83,7 +83,7 @@ val startServiceIntent: Intent = Intent(this, WarmService::class.java)
 ```
 
 ### Function
- - WarmApp.kt - Line 34
+ - WarmApp.kt Line 34
 
 ```
 // Java 寫法
@@ -98,7 +98,7 @@ private fun createNotificationChannel(): Unit {
 ```
 
 ### Kotlin 操作 Java Class<T>
- - WarmApp.kt - Line 43
+ - WarmApp.kt Line 43
 
 ```
 val notificationManager = getSystemService(NotificationManager::class.java)
@@ -106,7 +106,7 @@ val notificationManager = getSystemService(NotificationManager::class.java)
 ```
 
 ### 繼承與實作
-- MainActivity.kt - Line 21
+- MainActivity.kt Line 21
 
 ```
 // Java 寫法
@@ -116,10 +116,269 @@ class MainActivity extends AppCompatActivity implements WarmPackageView
 class MainActivity : AppCompatActivity(), WarmPackageView
 ```
 
-### final const 成員
-- MainActivity.kt - Line 23
+### final constant 成員
+- MainActivity.kt Line 23
 
 ```
+// Java 寫法
+private final int MAX_TEMPERATURE = 50;
+
+// Kotlin 寫法
 // 採用 val 而非 var 宣告常數值 (val 是 value 的意思)
 private val MAX_TEMPERATURE:Int = 50
 ```
+
+### 可為 null 的變數
+ - MainActivity.kt Line 25
+
+```
+// warmService 這個變數可為 null
+// 所有類別成員變數若在建構式前無法給值，一律需宣告為可 null
+private var warmService: WarmService? = null
+```
+
+### 操作可為 null 的變數
+ - MainActivity.kt Line 61
+
+```
+// 操作物件成員前要使用 ?.
+// 意指若 presenter 為 null 時會直接回傳 null 給 targetTemperature
+var targetTemperature:Int = presenter?.getTargetTemperature()?.toInt() ?: 0
+```
+
+### if not null 判斷的寫法
+ - MainActivity.kt Line 80
+
+```
+// Java 寫法
+if (warmService != null) {
+    if (presenter != null) {
+        presenter.attachModel(warmService);
+        presenter.initial();
+    }
+}
+
+// Kotlin 寫法
+// 多行或需要對非 null 回傳值做運算時用 ?.let { ... }
+// 單行時用 ?. 就夠了
+warmService?.let {
+    presenter?.attachModel(it)
+    presenter?.initial()
+}
+```
+
+### 操作可 null 的變數時若需要預設值
+ - MainActivity.kt Line 61
+
+```
+// 在 ?: 後提供左側任何環節發生 null 時該提供的預設值
+var targetTemperature:Int = presenter?.getTargetTemperature()?.toInt() ?: 0
+```
+
+### 可為 null 變數用於判斷式的注意事項
+- MainActivity.kt Line 45
+
+```
+// 若 presenter 是 null 時，會直接回傳 null
+// 也就是說最終拿來判斷是否 == false 的不一定是 getIsRunning() 的值
+// 所以這時後你的判斷式如果是 if (presenter?.getIsRunning() != true)
+// 可能會發生 null != true 而進去流程的狀況
+// 請注意判斷式習慣正向判斷 == true 或 == false，別用 !=
+
+if (presenter?.getIsRunning() == false) {
+    presenter?.closeService()
+}
+```
+
+### 比 String.format 更方便的語法
+ - MainActivity.kt Line 96
+
+```
+// 在 "" 雙引號範圍內，可以使用 $ 來使用變數
+textviewTemperature.setText("$temperature")
+
+// 甚至可以使用 ${} 來用運算式, 例如寫這樣也行
+textviewTemperature.setText("${initTargetTemp + progress}")
+
+// 當然也可以用在 String.format("") 中，例如
+// 相對於使用 %d 來得方便許多
+Log.e(tag, String.format("${initTargetTemp + progress}"))
+```
+
+### function return value 用於判斷式的限制
+ - MainActivity.kt Line 116
+
+```
+// 因為 presenter 可能是 null
+// 所以不能像 Java 只寫 if (presenter.getIsRunning()) { ... }
+if (presenter?.getIsRunning() == true) { ... }
+```
+
+### Property 的概念
+ - MainActivity.kt Line 125
+
+```
+// Java 寫法
+textviewCurrentTemperature.setText(currentTemp.toString())
+
+// Kotlin 寫法
+// 在 Kotlin 內 getter、setter 是自動產生的
+// 所以直接操作 text 其實是操作了自動產生的 text setter
+// 而不是真的操作到 TextView 內的 text 這個 member
+textviewCurrentTemperature.text = currentTemp.toString()
+```
+
+### Switch case 的寫法
+ - MainActivity.kt Line 132
+
+```
+// 不像 Switch 有 break 可以用
+// 有多個條件成立的狀況是用逗號相接
+// 例如第二個可以寫成 false, null -> { ... }
+when (uiStatus) {
+    true -> {
+        fab.setEnabled(false)
+        seekbarTemperature.setEnabled(false)
+        createSnackBar()
+    }
+    false -> {
+        fab.isEnabled = true
+        seekbarTemperature.isEnabled = true
+        closeSnackBar()
+    }
+}
+```
+
+### 沒有回傳值的 function
+ - MainActivity.kt Line 152
+
+```
+// Java 寫法
+private void createSnackBar() { ... }
+
+// Kotlin 寫法
+// 然後 Unit 可以省略
+// 有一個很類似的類別叫 Nothing 可以混用但記得義意是不同的
+private fun createSnackBar(): Unit { ... }
+```
+
+### 暱名物件的寫法
+ - MainActivity.kt Line 155
+
+```
+// Java 寫法
+// override 採用 annotation 的方式指定
+new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+    }
+}
+
+// Kotlin 寫法
+// override 寫在 function 宣告中
+object : View.OnClickListener {
+    override fun onClick(v: View?) {
+    }
+}
+```
+
+### 關於常用的 MainActivity.this
+ - WarmService.kt Line 66
+
+```
+// Java 寫法
+return WarmService.this;
+
+// Kotlin 寫法
+return this@WarmService
+```
+
+### 關於轉型
+ - WarmService.kt Line 70
+
+```
+// 使用 as 轉型，而非在前面使用 (Type)
+// 如果想避免 CaseException 也可以改用 as? 在無法轉型時回傳 null
+var sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+```
+
+### for 用於 List 物件的寫法
+ - WarmService.kt Line 88
+
+```
+// 正常是寫 for (sensor:Sensor in allSensor)
+// 但 Kotlin 可自動辨示所以型態可以省略
+for (sensor in allSensor) {
+    Log.e("Sensor", sensor.toString())
+    if (sensor.name.toLowerCase().indexOf("temp") >= 0) {
+        temperatureSensor = sensor
+        break
+    }
+}
+```
+
+### for 用於整數計算的寫法
+ - WarmService.kt Line 113
+
+```
+// for (int i=1; i<=30; ++i) 的意思
+for (i in 1..30) {
+    try {
+        var runnable = WarmRunnable()
+        threadList.add(runnable)
+        Thread(runnable).start()
+    } catch (e: Exception) {
+        break
+    }
+}
+```
+
+### 預設類別建構式
+ - APIBase.kt Line 11
+
+```
+// 預設建構式有指定參數時，就不再擁有無參數的建構式了
+// 以這個例子來看就是 queue: ResquestQueue
+// 所以無法用 var api = InvoiceAPI() 來建構，一定要餵個 queue object
+abstract class APIBase<APIType: APIBase<APIType, ResultType>, ResultType>(queue: RequestQueue): API<ResultType>
+```
+
+### 類別成員與建構式參數
+ - APIBase.kt Line 14
+
+```
+// 類別成員宣告時可以直接調用建構式中的參數
+private var requestQueue: RequestQueue = queue
+
+// 如果有要在建構式做其他事的話就是醬寫
+// 需要注意 init function 位置必須在操作到的成員變數之下，否則無法編譯
+// init {
+//     requestQueue = queue
+// }
+```
+ 
+### 類別建構式 Overloading
+ - InvoiceAPI.kt Line 12
+
+```
+// 如果需要寫第二種建構式就是醬寫
+// 預設建構式以外的建構式都一定要傳入預設建構式所需的參數
+// 以此為例就是 queue:RequestQueue
+// 如果拿掉 queue:RequestQueue 就會無法編譯
+constructor(queue:RequestQueue,
+            successListener: API.APISuccessListener<InvoiceResult>,
+            failListener: API.APIFailListener): this(queue) {
+    this.successListener = successListener
+    this.failListener = failListener
+}
+```
+
+### Functional programming 風格的語法
+ - InvoiceResult.kt Line 20
+
+```
+// 省略 { return "..." } function body 的寫法
+// 背後的概念是指函數可以被賦值
+override fun getUrl(): String = "https://asciihuang.github.io/invoice.json"
+```
+
