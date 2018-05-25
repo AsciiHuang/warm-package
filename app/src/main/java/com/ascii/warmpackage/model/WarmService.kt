@@ -122,16 +122,32 @@ class WarmService : Service(), WarmPackageModel {
     }
 
     private fun demoAPICall() {
+        // if (requestQueue != null) { ... } 的意思
         requestQueue?.let {
+            // 使用預設建構式
             InvoiceAPI(it).success(object: API.APISuccessListener<InvoiceResult> {
                 override fun onSuccess(result: InvoiceResult) {
-                    Log.e("InvoiceResult API", result.toString())
+                    Log.e("Invoice API - First", result.toString())
                 }
             }).fail(object: API.APIFailListener {
                 override fun onFail() {
-                    Log.e("InvoiceResult API", "Fail")
+                    Log.e("Invoice API - First", "Fail")
                 }
             }).start()
+
+            // 使用 second constructor
+            var api = InvoiceAPI(it,
+            object: API.APISuccessListener<InvoiceResult> {
+                override fun onSuccess(result: InvoiceResult) {
+                    Log.e("Invoice API - Second", result.toString())
+                }
+            },
+            object: API.APIFailListener {
+                override fun onFail() {
+                    Log.e("Invoice API - Second", "Fail")
+                }
+            })
+            api.start()
         }
     }
 

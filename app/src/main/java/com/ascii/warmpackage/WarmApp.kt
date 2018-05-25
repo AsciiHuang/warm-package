@@ -5,6 +5,7 @@ import android.app.Application
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import com.ascii.warmpackage.model.WarmService
@@ -21,7 +22,7 @@ class WarmApp : Application() {
     }
 
     private fun startWarmService() {
-        val startServiceIntent = Intent(this, WarmService::class.java)
+        val startServiceIntent: Intent = Intent(this, WarmService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(startServiceIntent)
         }
@@ -30,12 +31,15 @@ class WarmApp : Application() {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel() {
+    private fun createNotificationChannel(): Unit {
         var notificationChannel = NotificationChannel(DEFAULT_CHANNEL_ID, "WarmPackage", NotificationManager.IMPORTANCE_LOW)
         notificationChannel.setDescription("WarmPackage")
         notificationChannel.setShowBadge(true)
         notificationChannel.enableVibration(false)
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC)
+        // 這樣子也可以拿 NotificationManager
+        // val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        // 不過我想示範一下 Kotlin 怎麼操作 Java Class
         val notificationManager = getSystemService(NotificationManager::class.java)
         notificationManager.createNotificationChannel(notificationChannel)
     }

@@ -144,7 +144,9 @@ class MainActivity : AppCompatActivity(), WarmPackageView {
         }
     }
 
-    private fun createSnackBar() {
+    // Unit 就是 void 的意思，可省略不寫
+    // Nothing
+    private fun createSnackBar(): Unit {
         // object: View.OnClickListener 是 new View.OnClickListener 最直接的翻譯
         snackbar = Snackbar.make(parentView!!, R.string.running, Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.action_exit, object : View.OnClickListener {
