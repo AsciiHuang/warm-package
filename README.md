@@ -17,22 +17,22 @@
 
 <table>
   <tr align="center">
-    <td bgcolor="#999999">Language</td><td>Java</td><td>Kotlin</td>
+    <td bgcolor="#999999"><b>Language</b></td><td>Java</td><td>Kotlin</td>
   </tr>
   <tr align="center">
-    <td bgcolor="#999999">Compiler</td><td>javac</td><td>kotlinc</td>
+    <td bgcolor="#999999"><b>Compiler</b></td><td>javac</td><td>kotlinc</td>
   </tr>
   <tr align="center">
-    <td bgcolor="#999999">Compile commend</td><td>javac text.java</td><td>kotlinc text.kt -include-runtime -d test.jar</td>
+    <td bgcolor="#999999"><b>Compile commend</b></td><td>javac text.java</td><td>kotlinc text.kt -include-runtime -d test.jar</td>
   </tr>
   <tr align="center">
-    <td bgcolor="#999999">Execution file</td><td colspan="2">Byte Code ( .class / .jar / .dex ) </td>
+    <td bgcolor="#999999"><b>Execution file</b></td><td colspan="2">Byte Code ( .class / .jar / .dex ) </td>
   </tr>
   <tr align="center">
-    <td bgcolor="#999999">Runtime Environment</td><td colspan="2">JVM / Dalvik / ART</td>
+    <td bgcolor="#999999"><b>Runtime Environment</b></td><td colspan="2">JVM / Dalvik / ART</td>
   </tr>
   <tr align="center">
-    <td bgcolor="#999999">Native Library</td><td colspan="2">Windows / Mac OS / Linux / Solaris / Android</td>
+    <td bgcolor="#999999"><b>Native Library</b></td><td colspan="2">Windows / Mac OS / Linux / Solaris / Android</td>
   </tr>
 </table>
 
