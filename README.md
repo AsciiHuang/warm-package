@@ -16,23 +16,23 @@
 首先透過一個簡單的表格了解 Kotlin 對於 Java Virtual Machine 與 Android 虛擬機 ( Dalvik / ART ) 的關係，並了解純 Kotlin 語言寫的程式碼能夠做到哪些事、何時該使用 -include-runtime 參數 。
 
 <table>
-  <tr align="center">
-    <td bgcolor="#999999"><b>Language</b></td><td>Java</td><td>Kotlin</td>
+  <tr>
+    <td bgcolor="#999999"><b>Language</b></td><td align="center">Java</td><td align="center">Kotlin</td>
   </tr>
-  <tr align="center">
-    <td bgcolor="#999999"><b>Compiler</b></td><td>javac</td><td>kotlinc</td>
+  <tr>
+    <td bgcolor="#999999"><b>Compiler</b></td><td align="center">javac</td><td align="center">kotlinc</td>
   </tr>
-  <tr align="center">
-    <td bgcolor="#999999"><b>Compile commend</b></td><td>javac text.java</td><td>kotlinc text.kt -include-runtime -d test.jar</td>
+  <tr>
+    <td bgcolor="#999999"><b>Compile commend</b></td><td align="center">javac text.java</td><td align="center">kotlinc text.kt -include-runtime -d test.jar</td>
   </tr>
-  <tr align="center">
-    <td bgcolor="#999999"><b>Execution file</b></td><td colspan="2">Byte Code ( .class / .jar / .dex ) </td>
+  <tr>
+    <td bgcolor="#999999"><b>Execution file</b></td><td colspan="2" align="center">Byte Code ( .class / .jar / .dex ) </td>
   </tr>
-  <tr align="center">
-    <td bgcolor="#999999"><b>Runtime Environment</b></td><td colspan="2">JVM / Dalvik / ART</td>
+  <tr>
+    <td bgcolor="#999999"><b>Runtime Environment</b></td><td colspan="2" align="center">JVM / Dalvik / ART</td>
   </tr>
-  <tr align="center">
-    <td bgcolor="#999999"><b>Native Library</b></td><td colspan="2">Windows / Mac OS / Linux / Solaris / Android</td>
+  <tr>
+    <td bgcolor="#999999"><b>Native Library</b></td><td colspan="2" align="center">Windows / Mac OS / Linux / Solaris / Android</td>
   </tr>
 </table>
 
