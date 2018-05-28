@@ -82,10 +82,8 @@ class MainActivity : AppCompatActivity(), WarmPackageView {
                 presenter?.initial()
             }
 
-            // 針對 == null 時要做事的情況似乎沒有方便的寫法
-            if (warmService == null) {
-                updateUIStatus()
-            }
+            // if (warmService == null) 的意思
+            warmService ?: updateUIStatus()
         }
     }
 

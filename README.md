@@ -200,7 +200,7 @@ private var warmService: WarmService? = null
 ```
 
 ### 操作可為 null 的變數
- - MainActivity.kt Line 61
+ - MainActivity.kt Line 62
 
 ```
 
@@ -238,8 +238,26 @@ warmService?.let {
 
 ```
 
+### if null 判斷的寫法
+ - MainActivity.kt Line 86
+
+```
+
+// Java 寫法
+
+if (warmService == null) {
+    updateUIStatus()
+}
+
+// Kotlin 寫法
+
+warmService ?: updateUIStatus()
+
+
+```
+
 ### 操作可 null 的變數時若需要預設值
- - MainActivity.kt Line 61
+ - MainActivity.kt Line 62
 
 ```
 
@@ -251,7 +269,7 @@ var targetTemperature:Int = presenter?.getTargetTemperature()?.toInt() ?: 0
 ```
 
 ### 可為 null 變數用於判斷式的注意事項
-- MainActivity.kt Line 45
+- MainActivity.kt Line 46
 
 ```
 
@@ -269,7 +287,7 @@ if (presenter?.getIsRunning() == false) {
 ```
 
 ### 更方便的字串語法
- - MainActivity.kt Line 96
+ - MainActivity.kt Line 94
 
 ```
 
@@ -290,7 +308,7 @@ Log.e(tag, String.format("${initTargetTemp + progress}"))
 ```
 
 ### function return value 用於判斷式的限制
- - MainActivity.kt Line 116
+ - MainActivity.kt Line 114
 
 ```
 
@@ -305,7 +323,7 @@ if (presenter?.getIsRunning() == true) {
 ```
 
 ### Property 的概念
- - MainActivity.kt Line 125
+ - MainActivity.kt Line 123
 
 ```
 
@@ -324,7 +342,7 @@ textviewCurrentTemperature.text = currentTemp.toString()
 ```
 
 ### Switch case 的寫法
- - MainActivity.kt Line 132
+ - MainActivity.kt Line 130
 
 ```
 
@@ -349,7 +367,7 @@ when (uiStatus) {
 ```
 
 ### 沒有回傳值的 function
- - MainActivity.kt Line 152
+ - MainActivity.kt Line 150
 
 ```
 
@@ -369,7 +387,7 @@ private fun createSnackBar(): Unit {
 ```
 
 ### 暱名物件的寫法
- - MainActivity.kt Line 155
+ - MainActivity.kt Line 153
 
 ```
 
