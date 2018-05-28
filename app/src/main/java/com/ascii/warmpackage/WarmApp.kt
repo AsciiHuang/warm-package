@@ -13,7 +13,7 @@ import com.ascii.warmpackage.model.WarmService
 class WarmApp : Application() {
 
     companion object {
-        const val DEFAULT_CHANNEL_ID: String = "WarmPackage"
+        val DEFAULT_CHANNEL_ID: String = "WarmPackage"
     }
 
     override fun onCreate() {

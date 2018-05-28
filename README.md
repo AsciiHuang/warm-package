@@ -45,7 +45,9 @@
 
 ## 如何開始使用 Kotlin
 
-因為 Kotlin 會編譯出運行在 JVM 之上的執行檔，所以還是要在對應平台上安裝 Java Runtime 與 JDK 後再安裝 Kotlin 編譯器。如果你只是要拿來開發 Android App 且不打算在 commend line 中執行，那使用安裝 Android Studio 3.0 以上版本自帶的 Kotlin 編譯器就很足夠了。如果想簡單試驗一些 Kotlin 語法的執行結果，可以在 Kotlin 官方的線上執行環境測試： [Try Kotlin](https://try.kotlinlang.org/)
+因為 Kotlin 的函式庫很精簡，撰寫 App 時大多數操作還是會用到 JDK 中的類別或函式，加上 Kotlin 是編譯出運行在 JVM 之上的執行檔，所以還是要在對應平台上安裝 JDK 與 Java Runtime 後再安裝 Kotlin 編譯器。
+
+如果你只是要拿來開發 Android App 且不打算在其他環境例如 Commend line 中執行，那使用安裝 Android Studio 3.0 以上版本自帶的 Kotlin 編譯器就很足夠了。如果想簡單試驗一些 Kotlin 語法的執行結果，可以在 Kotlin 官方的線上執行環境測試： [Try Kotlin](https://try.kotlinlang.org/)
 
 在原有的 Android 專案中，僅需在 build.gradle 加入 plugin 即可
 
@@ -58,7 +60,7 @@
 
 ## Kotlin 的 Coding Conventions
 
-Kotlin 沒有 Java 的 int、boolean、double、void 這種 Native Type 與 Integer、Boolean、Double、Void 這種類別成員的差異，所以在 Kotlin 中類別名稱一律使用大寫開頭，例如 Int、Boolean、Double、Unit、Nothing 等等，其他基本上與 Java 極為相像，詳情請見 JetBrains 官方文件： [Coding Conventions for Kotlin] (https://kotlinlang.org/docs/reference/coding-conventions.html)
+Kotlin 沒有 Java 的 int、boolean、double、void 這種 Native Type 與 Integer、Boolean、Double、Void 這種類別成員的差異，所以在 Kotlin 中類別名稱一律使用大寫開頭，例如 Int、Boolean、Double、Unit、Nothing 等等，其他基本上與 Java 極為相像，詳情請見 JetBrains 官方文件： [Coding Conventions for Kotlin](https://kotlinlang.org/docs/reference/coding-conventions.html)
 
 ## 最基礎必須要懂的 Kotlin 常用語法
 
@@ -94,6 +96,12 @@ public static final String DEFAULT_CHANNEL_ID = "WarmPackage";
 // Kotlin 寫法
 
 companion object {
+    val DEFAULT_CHANNEL_ID: String = "WarmPackage"
+}
+
+// 如果只是要定義常數，請加上 const 例如
+
+companion object {
     const val DEFAULT_CHANNEL_ID: String = "WarmPackage"
 }
 
@@ -120,7 +128,7 @@ private fun createNotificationChannel(): Unit {
 
 ```
 
-### Kotlin 操作 Java Class
+### Kotlin 操作 Java Class&lt;T&gt;
  - WarmApp.kt Line 43
 
 ```
@@ -522,6 +530,190 @@ constructor(queue:RequestQueue,
 // 背後的概念是指函數可以被賦值
 
 override fun getUrl(): String = "https://asciihuang.github.io/invoice.json"
+
+
+```
+
+## 由反組譯了解 Kotlin 語法
+
+### Null Safety
+
+```
+
+// Kotlin 寫法
+
+private fun closeSnackBar() {
+    snackbar?.dismiss()
+}
+
+// Compile 後
+
+private final void closeSnackBar()
+{
+  Snackbar localSnackbar = this.snackbar;
+  if (localSnackbar != null) {
+    localSnackbar.dismiss();
+  }
+}
+
+
+```
+
+### companion object
+
+```
+
+// Kotlin 寫法
+
+companion object {
+   val DEFAULT_CHANNEL_ID: String = "WarmPackage"
+}
+
+// Compile 後
+
+public static final Companion Companion = new Companion(null);
+
+@NotNull
+public static final String DEFAULT_CHANNEL_ID = "WarmPackage";
+
+@Metadata(bv={1, 0, 2}, d1={"\000\024\n\002\030\002\n\002\020\000\n\002\b\002\n\002\020\016\n\002\b\003\b��\003\030\0002\0020\001B\007\b\002��\006\002\020\002R\024\020\003\032\0020\004X��D��\006\b\n\000\032\004\b\005\020\006��\006\007"}, d2={"Lcom/ascii/warmpackage/WarmApp$Companion;", "", "()V", "DEFAULT_CHANNEL_ID", "", "getDEFAULT_CHANNEL_ID", "()Ljava/lang/String;", "app_debug"}, k=1, mv={1, 1, 7})
+public static final class Companion
+{
+  @NotNull
+  public final String getDEFAULT_CHANNEL_ID()
+  {
+    return WarmApp.access$getDEFAULT_CHANNEL_ID$cp();
+  }
+}
+
+
+```
+
+### Class&lt;T&gt;
+
+```
+
+// Kotlin 寫法
+
+val startServiceIntent: Intent = Intent(this, WarmService::class.java)
+
+// Compile 後
+
+Intent localIntent = new Intent((Context)this, WarmService.class);
+
+
+```
+
+### for (i in 1..30)
+
+```
+
+// Kotlin 寫法
+
+for (i in 1..30) {
+    try {
+        var runnable = WarmRunnable()
+        threadList.add(runnable)
+        Thread(runnable).start()
+    } catch (e: Exception) {
+        break
+    }
+}
+
+// Compile 後
+
+int i = 1;
+while (i < 31) {
+  try
+  {
+    WarmRunnable localWarmRunnable = new WarmRunnable();
+    this.threadList.add(localWarmRunnable);
+    new Thread((Runnable)localWarmRunnable).start();
+    i++;
+  }
+  catch (Exception localException) {}
+}
+
+
+```
+
+### 操作 Companion Object
+
+```
+
+// Kotlin 寫法
+
+val mBuilder = 
+    NotificationCompat.Builder(this, WarmApp.DEFAULT_CHANNEL_ID)
+
+// Compile 後
+
+NotificationCompat.Builder localBuilder = 
+    new NotificationCompat.Builder((Context)this, 
+    WarmApp.Companion.getDEFAULT_CHANNEL_ID())
+
+
+```
+
+### 字串處理語法
+
+```
+
+// Kotlin 寫法
+
+val contentText:String = String.format("$currentTemperature / ${getTargetTemperature()}")
+
+// Compile 後
+
+String str1 = "" + this.currentTemperature + " / " + getTargetTemperature();
+
+
+```
+
+### Safety call 與預設值
+
+
+```
+
+// Kotlin 寫法
+
+var dValue = presenter?.getTargetTemperature() ?: 99.0
+textviewTemperature.setText(dValue.toString())
+
+var sValue = warmService?.getMd5Hash("12345") ?: "Ascii"
+textviewTemperature.setText(sValue)
+
+// Compile 後
+
+WarmPackagePresenter localWarmPackagePresenter = this.presenter;
+double d;
+String str;
+if (localWarmPackagePresenter != null)
+{
+  Double localDouble = localWarmPackagePresenter.getTargetTemperature();
+  if (localDouble != null)
+  {
+    d = localDouble.doubleValue();
+    ((TextView)_$_findCachedViewById(R.id.textviewTemperature)).setText((CharSequence)String.valueOf(d));
+    WarmService localWarmService = this.warmService;
+    if (localWarmService == null) {
+      break label115;
+    }
+    str = localWarmService.getMd5Hash("12345");
+    if (str == null) {
+      break label115;
+    }
+  }
+}
+for (;;)
+{
+  ((TextView)_$_findCachedViewById(R.id.textviewTemperature)).setText((CharSequence)str);
+  return;
+  d = 99.0D;
+  break;
+  label115:
+  str = "Ascii";
+}
 
 
 ```
