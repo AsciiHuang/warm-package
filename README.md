@@ -72,7 +72,7 @@ Kotlin 沒有 Java 的 int、boolean、double、void 這種 Native Type 與 Inte
 // Java 寫法
 
 String message = "I am Ascii";
-final Intent startServiceIntent = new Intent(this, WarmService.class)
+final Intent startServiceIntent = new Intent(this, WarmService.class);
 
 // Kotlin 寫法
 // 使用編譯器自動推導的形態時可省略 :Type
@@ -132,6 +132,12 @@ private fun createNotificationChannel(): Unit {
  - WarmApp.kt Line 43
 
 ```
+
+// Java 寫法
+
+NotificationManager notificationManager = getSystemService(NotificationManager.class);
+
+// Kotlin 寫法
 
 val notificationManager = getSystemService(NotificationManager::class.java)
 
@@ -291,7 +297,7 @@ if (presenter?.getIsRunning() == false) {
 
 ```
 
-// 在 "" 雙引號範圍內，可以使用 $ 來使用變數
+// 在 "" 雙引號範圍內，可以利用 $ 符號來引入變數
 
 textviewTemperature.setText("$temperature")
 
@@ -299,8 +305,7 @@ textviewTemperature.setText("$temperature")
 
 textviewTemperature.setText("${initTargetTemp + progress}")
 
-// 當然也可以用在 String.format("") 中，例如
-// 相對於使用 %d 來得方便許多
+// 當然也可以用在 String.format("") 中，相對於使用 %d 方便許多
 
 Log.e(tag, String.format("${initTargetTemp + progress}"))
 
@@ -312,6 +317,13 @@ Log.e(tag, String.format("${initTargetTemp + progress}"))
 
 ```
 
+// Java 寫法
+
+if (presenter.getIsRunning()) {
+        Log.e(TAG, "is running")
+}
+
+// Kotlin 寫法
 // 因為 presenter 可能是 null
 // 所以不能像 Java 只寫 if (presenter.getIsRunning()) { ... }
 
@@ -436,6 +448,11 @@ return this@WarmService
 
 ```
 
+// Java 寫法
+
+SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+// Kotlin 寫法
 // 使用 as 轉型，而非在前面使用 (Type)
 // 如果想避免 CaseException 也可以改用 as? 在無法轉型時回傳 null
 
@@ -544,7 +561,15 @@ constructor(queue:RequestQueue,
 
 ```
 
-// 省略 { return "..." } function body 的寫法
+// Java 寫法
+
+@Override
+String getUrl() {
+    return "https://asciihuang.github.io/invoice.json";
+}
+
+// Kotlin 寫法
+// 可以省略 { return "..." } function body
 // 背後的概念是指函數可以被賦值
 
 override fun getUrl(): String = "https://asciihuang.github.io/invoice.json"
