@@ -761,3 +761,22 @@ for (;;)
 
 ```
 
+### Unit 與 Nothing
+
+```
+
+// Kotlin 寫法
+
+fun testUnit(): Unit
+fun testNothing(): Nothing
+
+// Compile 後
+
+@NotNull
+public abstract Void testNothing();  
+public abstract void testUnit();
+
+
+```
+
+
