@@ -45,7 +45,7 @@
 
 ## 如何開始使用 Kotlin
 
-因為 Kotlin 的函式庫很精簡，撰寫 App 時操作還是會用到 Android SDK 與 JDK 中的類別或函式，加上 Kotlin 是編譯出運行在 JVM 之上的執行檔，所以還是要在對應平台上安裝 JDK 與 Java Runtime 後再安裝 Kotlin 編譯器。
+因為 Kotlin 的函式庫很精簡，撰寫 App 時還是會操作到 Android SDK 與 JDK 中的類別或函式，加上 Kotlin 是編譯出運行在 JVM 之上的執行檔，所以還是要在對應平台上安裝 JDK 與 Java Runtime 後再安裝 Kotlin 編譯器。
 
 如果你只是要拿來開發 Android App 且不打算在其他環境例如 Commend line 中執行，那使用安裝 Android Studio 3.0 以上版本自帶的 Kotlin 編譯器就很足夠了。如果想簡單試驗一些 Kotlin 語法的執行結果，可以在 Kotlin 官方的線上執行環境測試： [Try Kotlin](https://try.kotlinlang.org/)
 
