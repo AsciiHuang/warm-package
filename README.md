@@ -128,6 +128,22 @@ private fun createNotificationChannel(): Unit {
 
 ```
 
+### Function 參數的注意事項
+
+```
+
+fun main(args: Array<String>) {
+    var dd: Double = 0.0
+    foo(dd)
+}
+
+fun foo(dParam: Double) {
+    dParam = 99.9 // 編譯錯誤 Val cannot be reassigned
+}
+
+
+```
+
 ### Kotlin 操作 Java Class&lt;T&gt;
  - WarmApp.kt Line 43
 
