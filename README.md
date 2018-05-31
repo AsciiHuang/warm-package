@@ -268,7 +268,7 @@ warmService?.let {
 // Java 寫法
 
 if (warmService == null) {
-    updateUIStatus()
+    updateUIStatus();
 }
 
 // Kotlin 寫法
