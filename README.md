@@ -316,6 +316,32 @@ warmService?.let {
 
 ```
 
+### function return value 用於判斷式的限制
+ - MainActivity.kt Line 114
+
+```
+
+// Java 寫法
+
+if (presenter.getIsRunning()) {
+        Log.e(TAG, "is running")
+}
+
+// Kotlin 寫法
+// 因為 presenter 可能是 null
+// 所以不能像 Java 只寫 if (presenter.getIsRunning()) { ... }
+
+if (presenter?.getIsRunning() == true) {
+    Log.e(TAG, "is running")
+}
+
+// 如果你對 Kotlin 的語法讀起來已經很順暢了，也可以這樣寫
+
+presenter?.takeIf { it.isRunning }?.apply { Log.e(TAG, "is running") }
+
+
+```
+
 ### 可為 null 變數用於判斷式的注意事項
 - MainActivity.kt Line 46
 
@@ -330,10 +356,6 @@ warmService?.let {
 if (presenter?.getIsRunning() == false) {
     presenter?.closeService()
 }
-
-// 也可以這樣寫
-
-presenter?.takeIf { it.isRunning }?.apply {...}
 
 
 ```
@@ -354,28 +376,6 @@ textviewTemperature.setText("${initTargetTemp + progress}")
 // 當然也可以用在 String.format("") 中，相對於使用 %d 方便許多
 
 Log.e(tag, String.format("${initTargetTemp + progress}"))
-
-
-```
-
-### function return value 用於判斷式的限制
- - MainActivity.kt Line 114
-
-```
-
-// Java 寫法
-
-if (presenter.getIsRunning()) {
-        Log.e(TAG, "is running")
-}
-
-// Kotlin 寫法
-// 因為 presenter 可能是 null
-// 所以不能像 Java 只寫 if (presenter.getIsRunning()) { ... }
-
-if (presenter?.getIsRunning() == true) {
-    Log.e(TAG, "is running")
-}
 
 
 ```
