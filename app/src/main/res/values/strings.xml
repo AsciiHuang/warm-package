@@ -4,5 +4,5 @@
     <string name="action_exit">關閉</string>
     <string name="current_temperature">目前溫度</string>
     <string name="target_temperature">設定發熱溫度</string>
-    <string name="running">發熱 ing </string>
+    <string name="running">發熱中…</string>
 </resources>
