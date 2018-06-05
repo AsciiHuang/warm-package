@@ -1,4 +1,4 @@
-# Warm Package
+# Warm Package 手機暖暖包
 這是一個使用 Kotlin 語言撰寫的 Android 專案，此 App 的功能是在畫面上顯示現在的電池溫度，你可以使用 Seekbar 調整想要讓手機發燙到幾度，按了 Float Action Button 後 App 就會開始做事情讓手機發燙，發燙期間你可以離開應用程式，它會在 Service 繼續發燙，你也可以隨時透過 Notification 的資訊得知目前發燙的進度和點擊進入 App 停止程序。
 
 ## 這個專案示範了哪些技能
@@ -45,7 +45,7 @@
 
 ## 如何開始使用 Kotlin
 
-因為 Kotlin 的函式庫很精簡，撰寫 App 時大多數操作還是會用到 JDK 中的類別或函式，加上 Kotlin 是編譯出運行在 JVM 之上的執行檔，所以還是要在對應平台上安裝 JDK 與 Java Runtime 後再安裝 Kotlin 編譯器。
+因為 Kotlin 的函式庫很精簡，撰寫 App 時還是會操作到 Android SDK 與 JDK 中的類別或函式，加上 Kotlin 是編譯出運行在 JVM 之上的執行檔，所以還是要在對應平台上安裝 JDK 與 Java Runtime 後再安裝 Kotlin 編譯器。
 
 如果你只是要拿來開發 Android App 且不打算在其他環境例如 Commend line 中執行，那使用安裝 Android Studio 3.0 以上版本自帶的 Kotlin 編譯器就很足夠了。如果想簡單試驗一些 Kotlin 語法的執行結果，可以在 Kotlin 官方的線上執行環境測試： [Try Kotlin](https://try.kotlinlang.org/)
 
@@ -123,6 +123,22 @@ private void createNotificationChannel() {
 
 private fun createNotificationChannel(): Unit {
     notificationManager.createNotificationChannel(notificationChannel)
+}
+
+
+```
+
+### Function 參數的注意事項
+
+```
+
+fun main(args: Array<String>) {
+    var dd: Double = 0.0
+    foo(dd)
+}
+
+fun foo(dParam: Double) {
+    dParam = 99.9 // 編譯錯誤 Val cannot be reassigned
 }
 
 
@@ -218,6 +234,18 @@ var targetTemperature:Int = presenter?.getTargetTemperature()?.toInt() ?: 0
 
 ```
 
+### 操作可 null 的變數時若需要預設值
+ - MainActivity.kt Line 62
+
+```
+
+// 在 ?: 後提供左側任何環節發生 null 時該提供的預設值
+
+var targetTemperature:Int = presenter?.getTargetTemperature()?.toInt() ?: 0
+
+
+```
+
 ### if not null 判斷的寫法
  - MainActivity.kt Line 80
 
@@ -252,7 +280,7 @@ warmService?.let {
 // Java 寫法
 
 if (warmService == null) {
-    updateUIStatus()
+    updateUIStatus();
 }
 
 // Kotlin 寫法
@@ -262,14 +290,54 @@ warmService ?: updateUIStatus()
 
 ```
 
-### 操作可 null 的變數時若需要預設值
- - MainActivity.kt Line 62
+### ?.let 與 ?: 也可以搭著寫
+ - MainActivity.kt Line 80
 
 ```
 
-// 在 ?: 後提供左側任何環節發生 null 時該提供的預設值
+// Java 寫法
 
-var targetTemperature:Int = presenter?.getTargetTemperature()?.toInt() ?: 0
+if (warmService != null) {
+    if (presenter != null) {
+        presenter.attachModel(warmService);
+        presenter.initial();
+    }
+} else {
+    updateUIStatus();
+}
+
+// Kotlin 寫法
+
+warmService?.let {
+    presenter?.attachModel(it)
+    presenter?.initial()
+} ?: updateUIStatus()
+
+
+```
+
+### function return value 用於判斷式的限制
+ - MainActivity.kt Line 114
+
+```
+
+// Java 寫法
+
+if (presenter.getIsRunning()) {
+        Log.e(TAG, "is running")
+}
+
+// Kotlin 寫法
+// 因為 presenter 可能是 null
+// 所以不能像 Java 只寫 if (presenter.getIsRunning()) { ... }
+
+if (presenter?.getIsRunning() == true) {
+    Log.e(TAG, "is running")
+}
+
+// 如果你對 Kotlin 的語法讀起來已經很順暢了，也可以這樣寫
+
+presenter?.takeIf { it.isRunning }?.apply { Log.e(TAG, "is running") }
 
 
 ```
@@ -308,28 +376,6 @@ textviewTemperature.setText("${initTargetTemp + progress}")
 // 當然也可以用在 String.format("") 中，相對於使用 %d 方便許多
 
 Log.e(tag, String.format("${initTargetTemp + progress}"))
-
-
-```
-
-### function return value 用於判斷式的限制
- - MainActivity.kt Line 114
-
-```
-
-// Java 寫法
-
-if (presenter.getIsRunning()) {
-        Log.e(TAG, "is running")
-}
-
-// Kotlin 寫法
-// 因為 presenter 可能是 null
-// 所以不能像 Java 只寫 if (presenter.getIsRunning()) { ... }
-
-if (presenter?.getIsRunning() == true) {
-    Log.e(TAG, "is running")
-}
 
 
 ```
